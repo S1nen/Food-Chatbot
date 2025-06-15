@@ -2,6 +2,10 @@
 venv/
 
 IMP Screenshots/
+
+training_phrases.txt
+
+IMP Terms, Jargons.txt
 # Ignore Python cache
 __pycache__/
 *.pyc
