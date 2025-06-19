@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Foodbot</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Dialogflow Messenger bootstrap -->
+  <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Food Ordering Assistant</h1>
+    <p>Your personal AI for seamless food ordering</p>
+  </header>
+
+  <<main class="container">
+    <!-- Menu Section -->
+    <section class="menu">
+      <h2 class="section-title">Our Menu</h2>
+      <div class="menu-grid">
+        <div class="menu-item">Burger</div>
+        <div class="menu-item">Fried Rice</div>
+        <div class="menu-item">Pizza</div>
+        <div class="menu-item">Mango Lassi</div>
+        <div class="menu-item">Chicken Sandwich</div>
+        <div class="menu-item">Veg Sandwich</div>
+        <div class="menu-item">Chocolate Milkshake</div>
+        <div class="menu-item">Caramel Cake</div>
+        <div class="menu-item">Strawberry Pancake</div>
+        <div class="menu-item">Loaded Fries</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Chatbot widget -->
+  <df-messenger
+    intent="WELCOME"
+    chat-title="chatbot"
+    agent-id="e1624f54-5b7d-49bd-8d47-7fec0d1b6f9c"
+    language-code="en"
+    chat-icon="https://i.postimg.cc/NMRZbfhx/food-bot-logo.jpg">
+  </df-messenger>
+</body>
+</html>
