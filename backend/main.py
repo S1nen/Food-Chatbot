@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi import Request
 from fastapi.responses import JSONResponse
-from . import db_helper
-from . import general_helper
+import db_helper
+import general_helper
 
 app=FastAPI()
 
