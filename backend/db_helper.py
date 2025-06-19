@@ -1,30 +1,3 @@
-"""
-import mysql.connector
-
-connection=mysql.connector.connect(
-    host="localhost",
-    user="root",
-    password="(@j12^12",
-    database="pandeyji_eatery"
-)
-
-def get_order_status(order_id:int):
-    cursor=connection.cursor()
-    query=("SELECT status FROM order_tracking WHERE order_id=%s")
-    cursor.execute(query,(order_id,))
-    result=cursor.fetchone()
-
-    cursor.close()
-    connection.close()
-
-    if result is not None:
-        return result[0]
-    else:
-        return None
-
-"""
-
-# db_helper.py
 import mysql.connector
 from dns.e164 import query
 
@@ -86,6 +59,7 @@ def insert_order_tracking_state(order_id,status):
     connection.commit()
     cursor.close()
 
+
 def get_order_status(order_id: int):
 
     cursor = connection.cursor()
@@ -96,5 +70,23 @@ def get_order_status(order_id: int):
     cursor.close()
 
     return result[0] if result else None
+
+
+def get_id_from_db(order_id:int):
+    cursor=connection.cursor()
+    query="SELECT order_id FROM orders WHERE order_id=%s"
+    cursor.execute(query,(order_id,))
+    id=cursor.fetchall()
+    cursor.close()
+
+    return id
+
+def delete_from_db(order_id:int):
+    cursor=connection.cursor()
+    cursor.execute("START transaction;")
+    cursor.execute("UPDATE order_tracking SET order_tracking.status='cancelled' WHERE order_id=%s",(order_id,))
+    cursor.execute("DELETE FROM orders WHERE order_id=%s",(order_id,))
+    connection.commit()
+    cursor.close()
 
 

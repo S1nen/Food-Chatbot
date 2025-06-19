@@ -4,72 +4,50 @@ from fastapi.responses import JSONResponse
 import db_helper
 import general_helper
 
-
 app=FastAPI()
 
-"""
-@app.post("/")
-async def handle_request(request: Request):
-    try:
-        payload = await request.json()
-        intent = payload["queryResult"]["intent"]["displayName"]
-        parameters = payload["queryResult"]["parameters"]
-
-        if intent == "Track Order-context:ongoing-order":
-            return track_order(parameters)
-
-        return JSONResponse(content={
-            "fulfillmentText": f"Sorry, I don't handle the intent: {intent}"
-        })
-
-    except Exception as e:
-        return JSONResponse(content={
-            "fulfillmentText": f"Error occurred: {str(e)}"
-        })
-
-
-def track_order(parameters: dict):
-    try:
-        order_id = int(parameters.get("order_id"))
-        order_status = db_helper.get_order_status(order_id)
-
-        if order_status:
-            fulfillment_text = f"The order status for order id {order_id} is: {order_status}"
-        else:
-            fulfillment_text = f"No order found with order id {order_id}"
-
-        return JSONResponse(content={"fulfillmentText": fulfillment_text})
-
-    except Exception as e:
-        return JSONResponse(content={"fulfillmentText": f"Error: {str(e)}"})
-"""
 
 in_progress_orders={}
 
 @app.post("/")
 async def handle_request(request: Request):
-    payload=await request.json()
-    intent=payload["queryResult"]["intent"]["displayName"]
-    parameters=payload["queryResult"]["parameters"]
-    output_contexts=payload["queryResult"]["outputContexts"]
-    session_id=general_helper.get_session_id(output_contexts[0]["name"])
+        payload = await request.json()
+        intent = payload["queryResult"]["intent"]["displayName"]
+        parameters = payload["queryResult"]["parameters"]
+        output_contexts = payload["queryResult"]["outputContexts"]
+
+        session_id = general_helper.get_session_id(output_contexts[0]["name"])
 
 
-    intent_handler_dict={
-        "Add Order-context:ongoing-order":add_to_order,
-        # "remove order-context:ongoing-order":remove_from_order,
-        "Order complete-context:ongoing-order":complete_order,
-        "Track Order-context:ongoing-order":track_order
-    }
 
-    return intent_handler_dict[intent](parameters, session_id)
+        intent_handler_dict = {
+            "Add Order-context:ongoing-order": add_to_order,
+            "remove order-context:ongoing-order": remove_from_order,
+            "Order complete-context:ongoing-order": complete_order,
+            "Track Order-context:ongoing-order": track_order,
+            "Cancel order":cancel_order,
+            "New Order":new_order
+        }
+
+        return intent_handler_dict[intent](parameters, session_id)
+
+
+
+
+def new_order(parameters:dict,session_id:str):
+    if session_id in in_progress_orders:
+        del in_progress_orders[session_id]
+    return JSONResponse(content={"fulfillmentText":"Ok, starting a new order. You can say things like 'I want two pizzas and one Chocolate Milkshake'."
+                                 " Make sure to specify a quantity for every food item!" 
+                                 " Also, we have only the following items on our menu: Burger, Fried Rice, Pizza, Mango Lassi, Chicken Sandwich, Veg Sandwich, Chocolate Milkshake, Caramel Cake, Strawberry Pancake and Loaded Fries."
+                                 })
 
 
 
 
 def add_to_order(parameters:dict,session_id:str):
-    food_items=parameters.get("Food-Item")
-    quantities=parameters.get("number")
+    food_items = parameters.get("Food-Item")
+    quantities = parameters.get("number")
 
     if len(food_items) != len(quantities):
         fulfillment_text="Sorry I didn't understand. Can you please specify food items and quantities clearly!"
@@ -92,18 +70,44 @@ def add_to_order(parameters:dict,session_id:str):
 
 
 
-def track_order(parameters: dict,session_id:str):
-    order_id=int(parameters.get("number"))
-    order_status=db_helper.get_order_status(order_id)
 
-    if order_status:
-        fulfillment_text=f"The order status for order id {order_id} is:{order_status}"
+
+def remove_from_order(parameters: dict, session_id: str):
+    if session_id not in in_progress_orders:
+        return JSONResponse(content={
+            "fulfillmentText": "I'm having a trouble finding your order. Sorry! Can you place a new order please?"
+        })
+
+    food_items = parameters["food-item"]
+    current_order = in_progress_orders[session_id]
+
+    removed_items = []
+    no_such_items = []
+
+    for item in food_items:
+        if item not in current_order:
+            no_such_items.append(item)
+        else:
+            removed_items.append(item)
+            del current_order[item]
+
+    if len(removed_items) > 0:
+        fulfillment_text = f'Removed {",".join(removed_items)} from your order!'
+
+    if len(no_such_items) > 0:
+        fulfillment_text = f' Your current order does not have {",".join(no_such_items)}'
+
+    if len(current_order.keys()) == 0:
+        fulfillment_text += " Your order is empty!"
     else:
-        fulfillment_text=f"No order found with order id : {order_id}"
+        order_str = general_helper.get_values_from_food_dict(current_order)
+        fulfillment_text += f" Here is what is left in your order: {order_str}, You need anything else?"
 
     return JSONResponse(content={
         "fulfillmentText": fulfillment_text
     })
+
+
 
 
 
@@ -122,12 +126,14 @@ def complete_order(parameters:dict,session_id:str):
             order_total=db_helper.get_total_price(order_id)
             fulfillment_text=f"We have successfully placed your order."\
             f" Here is your order id: #{order_id}. "\
-            f"Your order total is {order_total}, which you can pay at the time of delivery."
+            f"Your order total is {order_total}, which you can pay at the time of delivery. Thank You."
 
         del in_progress_orders[session_id]
     return JSONResponse(content={
         "fulfillmentText":fulfillment_text
     })
+
+
 
 
 
@@ -150,50 +156,31 @@ def save_to_db(order:dict):
 
 
 
-"""
-
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-import db_helper
-
-app = FastAPI()
-
-
-@app.post("/")
-async def handle_request(request: Request):
-    try:
-        payload = await request.json()
-        print("Payload received:", payload)  # 🧪 Log input
-
-        intent = payload["queryResult"]["intent"]["displayName"]
-        parameters = payload["queryResult"]["parameters"]
-        print("Intent:", intent)
-        print("Parameters:", parameters)
-
-        if intent == "Track Order-context:ongoing-order":
-            return track_order(parameters)
-        else:
-            return JSONResponse(content={"fulfillmentText": "Intent not handled."})
-
-    except Exception as e:
-        import traceback
-        traceback.print_exc()  # 🧪 Log full error in the terminal
-        return JSONResponse(status_code=500, content={"error": str(e)})
-
-
-
-
-def track_order(parameters: dict):
-    # Fix: Dialogflow sends 'number' not 'order_id'
-    order_id = parameters.get("number")
-
-    order_status = db_helper.get_order_status(order_id)
+def track_order(parameters: dict,session_id:str):
+    order_id=int(parameters.get("number"))
+    order_status=db_helper.get_order_status(order_id)
 
     if order_status:
-        fulfillment_text = f"The order status for order id {order_id} is: {order_status}"
+        fulfillment_text=f"The order status for order id {order_id} is: {order_status}"
     else:
-        fulfillment_text = f"No order found with order id {order_id}"
+        fulfillment_text=f"No order found with order id : {order_id}"
 
-    return JSONResponse(content={"fulfillmentText": fulfillment_text})
+    return JSONResponse(content={
+        "fulfillmentText": fulfillment_text
+    })
 
-"""
+
+
+
+
+def cancel_order(parameters:dict,order_id:int):
+    order_id=int(parameters.get("number"))
+    id_order=db_helper.get_id_from_db(order_id)
+    if not id_order:
+        fulfillment_text=f"Order not found with the given id {order_id}, Place a new order"
+    else:
+        db_helper.delete_from_db(order_id)
+        fulfillment_text=f"Your Order with id #{order_id} is Successfully Cancelled "
+    return JSONResponse(content={
+        "fulfillmentText":fulfillment_text
+    })
