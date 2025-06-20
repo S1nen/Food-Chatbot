@@ -184,3 +184,10 @@ def cancel_order(parameters:dict,order_id:int):
     return JSONResponse(content={
         "fulfillmentText":fulfillment_text
     })
+
+
+
+import uvicorn
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=8000
