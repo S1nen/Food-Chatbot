@@ -1,12 +1,14 @@
 import mysql.connector
 from dns.e164 import query
+import os
 
 connection = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="(@j12^12",
-        database="pandeyji_eatery"
-    )
+    host     = os.getenv("MYSQLHOST", "localhost"), 
+    user     = os.getenv("MYSQLUSER", "root"),
+    password = os.getenv("MYSQLPASSWORD", "(@j12^12"),
+    database = os.getenv("MYSQLDATABASE", "pandeyji_eatery"),
+    port     = int(os.getenv("MYSQLPORT", 3306))
+)
 
 def insert_order_item(food_items,quantity,order_id):
     try:
