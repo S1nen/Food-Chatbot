@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from dns.e164 import query
+import os
 
 # connection = mysql.connector.connect(
 #         host="****",
@@ -13,6 +14,7 @@ from dns.e164 import query
 #     )
 
 connection = mysql.connector.connect(
+<<<<<<< HEAD
     host=os.getenv("MYSQLHOST"),
     user=os.getenv("MYSQLUSER"),
     password=os.getenv("MYSQLPASSWORD"),
@@ -21,6 +23,14 @@ connection = mysql.connector.connect(
     ssl_ca=os.getenv("MYSQLSSLCA")  # Optional if using secure CA
 )
 
+=======
+    host     = os.getenv("MYSQLHOST", "localhost"), 
+    user     = os.getenv("MYSQLUSER", "root"),
+    password = os.getenv("MYSQLPASSWORD", "(@j12^12"),
+    database = os.getenv("MYSQLDATABASE", "pandeyji_eatery"),
+    port     = int(os.getenv("MYSQLPORT", 3306))
+)
+>>>>>>> f49f52a62246171e4ee9afa9797c02cba9d99823
 
 def insert_order_item(food_items,quantity,order_id):
     try:
