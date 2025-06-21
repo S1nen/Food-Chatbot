@@ -45,3 +45,9 @@ what the chatbot says or replies when it didn't understand what's the user is sa
 
 (cloudflared tunnel --url http://localhost:8000)
 
+uvicorn backend.main:app --host 0.0.0.0 --port 10000
+
+
+
+I independently developed an end-to-end food ordering chatbot using Dialogflow for NLP and FastAPI for backend API development. The chatbot handles natural language queries, manages user sessions for ongoing orders, and interacts with a MySQL database to insert, track, and cancel food orders dynamically. I implemented modular intent handling for actions such as adding, removing, completing, tracking, and canceling orders, ensuring smooth conversational flow. Integrated real-time order tracking and error handling mechanisms to improve user experience. Designed and deployed a responsive front-end interface using HTML/CSS that displays a dynamic menu alongside the chatbot widget. Optimized database transactions using stored procedures and ensured ACID compliance for operations like order placement and cancellation. Successfully reduced redundant queries and improved processing efficiency using a session-based in-memory store. The project simulates a real-world restaurant ordering system and demonstrates full-cycle API development, database integration, and user interface implementation.
+

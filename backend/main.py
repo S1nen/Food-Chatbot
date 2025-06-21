@@ -4,6 +4,8 @@ from fastapi.responses import JSONResponse
 import db_helper
 import general_helper
 
+
+
 app=FastAPI()
 
 
@@ -184,3 +186,9 @@ def cancel_order(parameters:dict,order_id:int):
     return JSONResponse(content={
         "fulfillmentText":fulfillment_text
     })
+
+
+# import uvicorn
+#
+# if __name__ == "__main__":
+#     uvicorn.run("main:app", host="0.0.0.0", port=8000)
