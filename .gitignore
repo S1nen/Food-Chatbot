@@ -2,6 +2,13 @@
 venv/
 
 .env
+IMP Screenshots/
+food bot logo.jpg
+food_data_full.sql
+IMP Terms, Jargons.txt
+routines.sql
+
+
 # Ignore Python cache
 __pycache__/
 *.pyc
