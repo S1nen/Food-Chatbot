@@ -192,7 +192,7 @@ def cancel_order(parameters:dict,order_id:int):
 
 
 
-# import uvicorn
-#
-# if __name__ == "__main__":
-#     uvicorn.run("main:app", host="0.0.0.0", port=8000)
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=10000, reload=False)
+

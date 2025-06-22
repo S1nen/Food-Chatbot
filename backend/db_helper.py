@@ -13,6 +13,7 @@ from dns.e164 import query
 
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 
 load_dotenv()
 
@@ -22,7 +23,8 @@ MYSQLUSER = os.getenv("MYSQLUSER")
 MYSQLPASSWORD = os.getenv("MYSQLPASSWORD")
 MYSQLDATABASE = os.getenv("MYSQLDATABASE")
 MYSQLPORT = int(os.getenv("MYSQLPORT", 3306))
-MYSQLSSLCA = os.getenv("MYSQLSSLCA")
+CA_PATH = Path(__file__).resolve().parent / "certs" / "ca.pem"
+
 
 
 connection = mysql.connector.connect(
@@ -31,9 +33,10 @@ connection = mysql.connector.connect(
     password=MYSQLPASSWORD,
     database=MYSQLDATABASE,
     port=MYSQLPORT,
-    ssl_ca=MYSQLSSLCA
+    ssl_ca=str(CA_PATH)
 )
 
+print("✅ Connected to Aiven MySQL")
 
 def insert_order_item(food_items,quantity,order_id):
     try:
