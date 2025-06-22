@@ -1,36 +1,39 @@
 import mysql.connector
-import os
-from dotenv import load_dotenv
-load_dotenv()
-
 from dns.e164 import query
-import os
+
 
 # connection = mysql.connector.connect(
-#         host="****",
-#         user="****",
-#         password="*****",
-#         database="*****"
-#     )
+#     host     = "localhost",
+#     user     = "root",
+#     password = "(@j12^12",
+#     database = "pandeyji_eatery"
+
+# )
+
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+
+MYSQLHOST = os.getenv("MYSQLHOST")
+MYSQLUSER = os.getenv("MYSQLUSER")
+MYSQLPASSWORD = os.getenv("MYSQLPASSWORD")
+MYSQLDATABASE = os.getenv("MYSQLDATABASE")
+MYSQLPORT = int(os.getenv("MYSQLPORT", 3306))
+MYSQLSSLCA = os.getenv("MYSQLSSLCA")
+
 
 connection = mysql.connector.connect(
-<<<<<<< HEAD
-    host=os.getenv("MYSQLHOST"),
-    user=os.getenv("MYSQLUSER"),
-    password=os.getenv("MYSQLPASSWORD"),
-    database=os.getenv("MYSQLDATABASE"),
-    port=int(os.getenv("MYSQLPORT", 27994)),
-    ssl_ca=os.getenv("MYSQLSSLCA")  # Optional if using secure CA
+    host=MYSQLHOST,
+    user=MYSQLUSER,
+    password=MYSQLPASSWORD,
+    database=MYSQLDATABASE,
+    port=MYSQLPORT,
+    ssl_ca=MYSQLSSLCA
 )
 
-=======
-    host     = os.getenv("MYSQLHOST", "localhost"), 
-    user     = os.getenv("MYSQLUSER", "root"),
-    password = os.getenv("MYSQLPASSWORD", "(@j12^12"),
-    database = os.getenv("MYSQLDATABASE", "pandeyji_eatery"),
-    port     = int(os.getenv("MYSQLPORT", 3306))
-)
->>>>>>> f49f52a62246171e4ee9afa9797c02cba9d99823
 
 def insert_order_item(food_items,quantity,order_id):
     try:
@@ -109,11 +112,8 @@ def delete_from_db(order_id:int):
     cursor=connection.cursor()
     cursor.execute("START transaction;")
     cursor.execute("UPDATE order_tracking SET order_tracking.status='cancelled' WHERE order_id=%s",(order_id,))
+    cursor.execute("DELETE FROM orders WHERE order_id=%s",(order_id,))
     connection.commit()
     cursor.close()
-
-
-
-
 
 

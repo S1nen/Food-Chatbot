@@ -5,7 +5,6 @@ import db_helper
 import general_helper
 
 
-
 app=FastAPI()
 
 
@@ -14,9 +13,12 @@ in_progress_orders={}
 @app.post("/")
 async def handle_request(request: Request):
         payload = await request.json()
+
+
         intent = payload["queryResult"]["intent"]["displayName"]
         parameters = payload["queryResult"]["parameters"]
         output_contexts = payload["queryResult"]["outputContexts"]
+
 
         session_id = general_helper.get_session_id(output_contexts[0]["name"])
 
@@ -160,6 +162,7 @@ def save_to_db(order:dict):
 
 def track_order(parameters: dict,session_id:str):
     order_id=int(parameters.get("number"))
+
     order_status=db_helper.get_order_status(order_id)
 
     if order_status:
@@ -188,15 +191,8 @@ def cancel_order(parameters:dict,order_id:int):
     })
 
 
-<<<<<<< HEAD
+
 # import uvicorn
 #
 # if __name__ == "__main__":
 #     uvicorn.run("main:app", host="0.0.0.0", port=8000)
-=======
-
-import uvicorn
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000
->>>>>>> f49f52a62246171e4ee9afa9797c02cba9d99823

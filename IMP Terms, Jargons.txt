@@ -1,3 +1,9 @@
+in the code every functions except the database rellated is working, functions like inserting into database, removing , tracking is not working
+
+no problem with the procedures, functions, table , think
+later ihad connected to aiven using aiven credentialsby creating a new connection, then i removed all the aiven things and want to test it with my localhost only, then now its not working?!! tell me how to debug it and solve the problem step by step!! one by one!!
+
+
 problem statement - A hotel website which contains their food menu with a certain number of items but no technology.
 
 solution- Integrate a chatbot to the bottom right and a person can say New order or track order, if i'm saying new order it will show me all the items which are available and add or remove items.
