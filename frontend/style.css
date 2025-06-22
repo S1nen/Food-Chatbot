@@ -1,4 +1,4 @@
-/* Reset & Base Styles */
+/* ---------- RESET & BASE ---------- */
 * {
   margin: 0;
   padding: 0;
@@ -15,13 +15,14 @@ body {
   flex-direction: column;
 }
 
-/* Header Styling */
+/* ---------- HEADER ---------- */
 header {
-  background-color: black;
+  background-color: #000;
   color: #fff;
   padding: 2rem 1rem;
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.8s ease-in;
 }
 
 header h1 {
@@ -33,20 +34,21 @@ header p {
   font-size: 1.2rem;
 }
 
-/* Container Section */
+/* ---------- MAIN CONTAINER ---------- */
 .container {
-  padding: 2rem 1rem 6rem; /* extra bottom padding to avoid chatbot overlap */
+  padding: 2rem 1rem 6rem;   /* bottom padding to keep chatbot off content */
 }
 
-/* Section Title */
+/* ---------- SECTION TITLE ---------- */
 .section-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 1.5rem;
   color: #444;
+  animation: fadeIn 0.8s ease-in;
 }
 
-/* Menu Grid */
+/* ---------- MENU GRID ---------- */
 .menu-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -57,37 +59,51 @@ header p {
 
 .menu-item {
   background: #fff;
-  border-radius: 8px;
-  padding: 1.2rem;
+  border-radius: 12px;
+  padding: 1rem;
   text-align: center;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeIn 0.8s ease-in;
+}
+
+.menu-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.menu-item p {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
 }
 
 .menu-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Dialogflow Messenger Styles */
+/* ---------- DIALOGFLOW MESSENGER ---------- */
 df-messenger {
   position: fixed;
   bottom: 16px;
   right: 16px;
   z-index: 999;
-
-  --df-messenger-button-titlebar-color: black;      /* background behind icon */
-  --df-messenger-chat-bubble-background: black;     /* redundant, but safe */
-  --df-messenger-chat-bubble-icon-size: 36px;       /* icon size */
-  --df-messenger-chat-bubble-size: 64px;            /* circle size */
-}
-
-/* Fade‑in animation */
-header, .menu, df-messenger {
+  --df-messenger-button-titlebar-color: #000;   /* icon circle bg */
+  --df-messenger-chat-bubble-background: #000;  /* chat bubble bg */
+  --df-messenger-chat-bubble-icon-size: 36px;
+  --df-messenger-chat-bubble-size: 64px;
   animation: fadeIn 0.8s ease-in;
 }
 
+/* ---------- FADE-IN KEYFRAMES ---------- */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to   { opacity: 1; transform: translateY(0); }

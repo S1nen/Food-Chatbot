@@ -4,37 +4,101 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Foodbot</title>
+
+  <!-- External stylesheet -->
   <link rel="stylesheet" href="style.css" />
 
   <!-- Dialogflow Messenger bootstrap -->
   <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1" defer></script>
 </head>
 <body>
+  <!-- ========= HEADER ========= -->
   <header>
-    <h1>Food Ordering Assistant</h1>
-    <p>Your personal AI for seamless food ordering</p>
+<!--    <h1>Foodbot</h1>-->
+<!--    <p>Your personal AI for seamless food ordering</p>-->
   </header>
 
-   <main class="container">
-    <!-- Menu Section -->
+  <!-- ========= MAIN ========= -->
+  <main class="container">
     <section class="menu">
       <h2 class="section-title">Our Menu</h2>
+
+      <!-- ------- MENU GRID ------- -->
       <div class="menu-grid">
-        <div class="menu-item">Burger</div>
-        <div class="menu-item">Fried Rice</div>
-        <div class="menu-item">Pizza</div>
-        <div class="menu-item">Mango Lassi</div>
-        <div class="menu-item">Chicken Sandwich</div>
-        <div class="menu-item">Veg Sandwich</div>
-        <div class="menu-item">Chocolate Milkshake</div>
-        <div class="menu-item">Caramel Cake</div>
-        <div class="menu-item">Strawberry Pancake</div>
-        <div class="menu-item">Loaded Fries</div>
+        <!-- Burger -->
+        <div class="menu-item">
+          <img src="burger.jpg"
+               alt="Burger">
+          <p>Burger</p>
+        </div>
+
+        <!-- Fried Rice -->
+        <div class="menu-item">
+          <img src="fried rice.jpg"
+               alt="Fried Rice">
+          <p>Fried Rice</p>
+        </div>
+
+        <!-- Pizza -->
+        <div class="menu-item">
+          <img src="pizza.jpg"
+               alt="Pizza">
+          <p>Pizza</p>
+        </div>
+
+        <!-- Mango Lassi -->
+        <div class="menu-item">
+          <img src="mango lassi.jpg"
+               alt="Mango Lassi">
+          <p>Mango Lassi</p>
+        </div>
+
+        <!-- Chicken Sandwich -->
+        <div class="menu-item">
+          <img src="chicken sandwich.jpg"
+               alt="Chicken Sandwich">
+          <p>Chicken Sandwich</p>
+        </div>
+
+        <!-- Veg Sandwich -->
+        <div class="menu-item">
+          <img src="veg sandwich.jpg"
+               alt="Veg Sandwich">
+          <p>Veg Sandwich</p>
+        </div>
+
+        <!-- Chocolate Milkshake -->
+        <div class="menu-item">
+          <img src="chocolate milkshake.jpg"
+               alt="Chocolate Milkshake">
+          <p>Chocolate Milkshake</p>
+        </div>
+
+        <!-- Caramel Cake -->
+        <div class="menu-item">
+          <img src="caramel cartoon.jpg"
+               alt="Caramel Cake">
+          <p>Caramel Cake</p>
+        </div>
+
+        <!-- Strawberry Pancake -->
+        <div class="menu-item">
+          <img src="strawberry pancake.jpg"
+               alt="Strawberry Pancake">
+          <p>Strawberry Pancake</p>
+        </div>
+
+        <!-- Loaded Fries -->
+        <div class="menu-item">
+          <img src="loaded fries.jpg"
+               alt="Loaded Fries">
+          <p>Loaded Fries</p>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- Chatbot widget -->
+  <!-- ========= DIALOGFLOW MESSENGER ========= -->
   <df-messenger
     intent="WELCOME"
     chat-title="chatbot"
